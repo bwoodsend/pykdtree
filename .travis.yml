@@ -1,16 +1,29 @@
-language: python
-python:
-- '2.7'
-- '3.6'
+notifications:
+  email: false
 
-env:
-- USE_OMP=0
-- USE_OMP=1 OMP_NUM_THREADS=4
-
-before_install:
-- sudo apt-get install python-dev
+matrix:
+  include:
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+           PLAT=manylinux1_x86_64
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+           PRE_CMD=linux32
+           PLAT=manylinux1_i686
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
+           PLAT=manylinux2010_x86_64
 
 install:
-- python setup.py install
+  - docker pull $DOCKER_IMAGE
 
-script: python setup.py test 
+script:
+  - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
+  - ls wheelhouse/
+
