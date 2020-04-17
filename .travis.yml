@@ -24,8 +24,10 @@ install:
   - docker pull $DOCKER_IMAGE
 
 script:
-  #- docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
-  #- ls wheelhouse/
-  - ls
-  - pwd
+  - chmod 777 travis/build-wheels.sh
+  - docker run -e PLAT=$PLAT
+               -v `pwd`:/io 
+               $DOCKER_IMAGE
+               /io/travis/build-wheels.sh
+  - ls wheels
 
