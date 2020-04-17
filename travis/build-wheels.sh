@@ -7,8 +7,8 @@ ls
 # Test then Compile wheels
 for PYBIN in /opt/python/*/bin; do
     "${PYBIN}/pip" install setuptools wheel auditwheel
-    (cd /io/ && "${PYBIN}/python" setup.py test)
-    (cd /io/ && "${PYBIN}/python" setup.py bdist_wheel)
+    (cd /io/ && "${PYBIN}/python" setup.py -q test)
+    (cd /io/ && "${PYBIN}/python" setup.py -q bdist_wheel)
 done
 
 # Wheels aren't considered manylinux unless they have been through 
