@@ -6,8 +6,8 @@ ls
 
 # Test then Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install setuptools wheel auditwheel
-    (cd /io/ && "${PYBIN}/python" setup.py -q test)
+    "${PYBIN}/pip" install -q setuptools wheel auditwheel twine
+    (cd /io/ && "${PYBIN}/python" setup.py -q nosetests)
     (cd /io/ && "${PYBIN}/python" setup.py -q bdist_wheel)
 done
 
@@ -18,4 +18,10 @@ for whl in /io/dist/*.whl; do
     auditwheel repair "$whl" --plat $PLAT -w /io/wheels/
         
 done
+
+ls wheels
+
+twine upload wheels/*.whl --skip-existing -- repository-url https://test.pypi.org/legacy/ --non-interactive --username bwoodsend
+
+
 
