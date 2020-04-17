@@ -6,7 +6,7 @@ ls
 
 # Test then Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install -q setuptools wheel auditwheel twine
+    "${PYBIN}/pip" install -q setuptools wheel auditwheel twine nose
     (cd /io/ && "${PYBIN}/python" setup.py -q nosetests)
     (cd /io/ && "${PYBIN}/python" setup.py -q bdist_wheel)
 done
