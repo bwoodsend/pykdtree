@@ -30,4 +30,11 @@ script:
                $DOCKER_IMAGE
                /io/travis/build-wheels.sh
   - ls wheels
+  - python3 -m pip install -U twine
+  - python3 -m twine upload wheels/*.whl 
+                            --skip-existing
+                            --repository-url https://test.pypi.org/legacy/
+                            --non-interactive
+                            --username bwoodsend
+
 
