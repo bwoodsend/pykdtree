@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e -x
 
+pwd
+ls
+
 # Compile wheels
-for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install setuptools bdist_wheel
-    (cd /io/ && "${PYBIN}/python" setup.py bdist_wheel)
-done
+#for PYBIN in /opt/python/*/bin; do
+#    "${PYBIN}/pip" install setuptools bdist_wheel
+#    (cd /io/ && "${PYBIN}/python" setup.py bdist_wheel)
+#done
 
 
 # Install packages and test
