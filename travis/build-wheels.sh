@@ -6,7 +6,7 @@ ls
 
 # Test then Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install -q -U setuptools wheel auditwheel twine nose numpy
+    "${PYBIN}/pip" install -q -U setuptools wheel auditwheel nose numpy
     (cd /io/ && "${PYBIN}/python" setup.py -q nosetests)
     (cd /io/ && "${PYBIN}/python" setup.py -q bdist_wheel)
 done
@@ -21,7 +21,6 @@ done
 
 ls wheels
 
-twine upload wheels/*.whl --skip-existing -- repository-url https://test.pypi.org/legacy/ --non-interactive --username bwoodsend
 
 
 
