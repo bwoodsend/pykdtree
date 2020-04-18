@@ -19,7 +19,7 @@ for whl in /io/dist/*.whl; do
         
 done
 
-ls wheels
+ls /io/wheels
 
 
 
