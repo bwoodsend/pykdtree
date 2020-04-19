@@ -16,7 +16,7 @@ for PYBIN in /opt/python/*[!u]/bin; do
 #    break
 done
 
-"$PYBIN/pip" install -q auditwheel twine
+"$PYBIN/pip" install -q auditwheel 
 
 # Wheels aren't considered manylinux unless they have been through 
 # auditwheel. (Know idea why.) Auditted wheels go in /io/wheels/.
