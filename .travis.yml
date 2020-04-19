@@ -24,6 +24,7 @@ matrix:
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
+           USE_OMP=1
            PLAT=manylinux2010_x86_64
 
 install:
@@ -31,12 +32,17 @@ install:
   - pip3 install twine
 
 script:
+  # This seems to be have become necessary only recently.
   - chmod 777 travis/build-wheels.sh
-  - docker run -e PLAT=$PLAT
-               -e USE_OMP=$USE_OMP
-               -v `pwd`:/io 
+
+  # Run build-wheels.sh within the manylinux docker image
+  - docker run -e PLAT=$PLAT        # Pass on docker image name
+               -e USE_OMP=$USE_OMP  # Pass on compile with OpenMP
+               -v `pwd`:/io         # Alias 'here' with the base path /io to allow files to be exchanged.
                $DOCKER_IMAGE
                /io/travis/build-wheels.sh
+
+  # Upload the wheels placed in the wheels/ folder.
   - twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheels/* --non-interactive
 
 
