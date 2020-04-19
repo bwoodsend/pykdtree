@@ -1,15 +1,22 @@
 #!/bin/bash
 set -e -x
 
-pwd
-ls
+#pwd
+#ls
+echo "Use OpenMP = $USE_OMP"
+
 
 # Test then Compile wheels
-for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install -q -U setuptools wheel auditwheel nose numpy
-    (cd /io/ && "${PYBIN}/python" setup.py -q nosetests)
-    (cd /io/ && "${PYBIN}/python" setup.py -q bdist_wheel)
+# Skip cp27mu
+mkdir -p /io/pip-cache
+for PYBIN in /opt/python/*[!u]/bin; do
+    "${PYBIN}/pip" install -q -U setuptools wheel nose numpy --cache-dir /io/pip-cache
+    (cd /io/ && USE_OMP=$USE_OMP "${PYBIN}/python" setup.py -q nosetests)
+    (cd /io/ && USE_OMP=$USE_OMP "${PYBIN}/python" setup.py -q bdist_wheel)
+#    break
 done
+
+"$PYBIN/pip" install -q auditwheel twine
 
 # Wheels aren't considered manylinux unless they have been through 
 # auditwheel. (Know idea why.) Auditted wheels go in /io/wheels/.

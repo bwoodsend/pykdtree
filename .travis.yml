@@ -12,11 +12,13 @@ matrix:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
            PLAT=manylinux1_x86_64
+           USE_OMP=0
     - sudo: required
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
            PRE_CMD=linux32
+           USE_OMP=1
            PLAT=manylinux1_i686
     - sudo: required
       services:
@@ -26,12 +28,16 @@ matrix:
 
 install:
   - docker pull $DOCKER_IMAGE
+  - pip3 install twine
 
 script:
   - chmod 777 travis/build-wheels.sh
   - docker run -e PLAT=$PLAT
+               -e USE_OMP=$USE_OMP
                -v `pwd`:/io 
                $DOCKER_IMAGE
                /io/travis/build-wheels.sh
+  - twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ wheels/* --non-interactive
+
 
 
