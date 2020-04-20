@@ -36,9 +36,11 @@ script:
   - chmod 777 travis/build-wheels.sh
 
   # Run build-wheels.sh within the manylinux docker image
-  - docker run -e PLAT=$PLAT        # Pass on docker image name
-               -e USE_OMP=$USE_OMP  # Pass on compile with OpenMP
-               -v `pwd`:/io         # Alias 'here' with the base path /io to allow files to be exchanged.
+  # -e Passes on docker image name and compile with OpenMP
+  # -v Alias 'here' with the base path /io to allow files to be exchanged.
+  - docker run -e PLAT=$PLAT        
+               -e USE_OMP=$USE_OMP  
+               -v `pwd`:/io 
                $DOCKER_IMAGE
                /io/travis/build-wheels.sh
 
